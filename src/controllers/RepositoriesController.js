@@ -24,10 +24,11 @@ class repositoriesController {
 
             const user = await User.findById(user_id);
 
+
             if (!user) return res.status(404).json({ message: "User not found!" });
 
             const repository = await Repository.findOne({
-                user_Id: user_id,
+                userId: user_id,
                 name
             });
 
@@ -38,6 +39,7 @@ class repositoriesController {
                 url,
                 userId: user_id
             });
+            console.log(`User id: ${user_id}.`);
 
             return res.status(201).json(newRepository);
 
