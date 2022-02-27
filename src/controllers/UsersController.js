@@ -33,7 +33,7 @@ class UsersController {
             if (user) return res.status(422).json({ message: `User ${email} already exists.` })
             //crypt password
             const encryptedPassword = await createPasswordHash(password);
-            const newUser = User.createOne({ email, password: encryptedPassword });
+            const newUser = User.create({ email, password: encryptedPassword });
             return res.status(201).json(newUser);
         } catch (error) {
             console.error(error);
