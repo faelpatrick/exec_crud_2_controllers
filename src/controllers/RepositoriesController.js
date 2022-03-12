@@ -1,5 +1,5 @@
 import Repository from "../models/Repository";
-import Repositpry from "../models/Repository";
+import Repository from "../models/Repository";
 import User from "../models/User";
 
 class repositoriesController {
@@ -9,7 +9,7 @@ class repositoriesController {
             const { user_id } = req.params;
             const user = await User.findById(user_id);
             if (!user) return res.status(404).json({ message: "User not found." });
-            const repositories = await Repositpry.find({ userId: user_id });
+            const repositories = await Repository.find({ userId: user_id });
             return res.status(200).json(repositories);
         } catch (error) {
             console.error(error);
@@ -57,7 +57,7 @@ class repositoriesController {
 
             if (!user) return res.status(404).json({ message: `User not found.` });
 
-            const repository = await Repositpry.findOne({
+            const repository = await Repository.findOne({
                 userId: user_id,
                 id
             });
