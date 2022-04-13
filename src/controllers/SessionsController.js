@@ -5,28 +5,34 @@ import authConfig from "../config/auth";
 
 class SessionController {
     async create(req, res) {
-        const { email, password } = req.body;
+        try{
+            const { email, password } = req.body;
+            const user = await User.findOne({ email });
+    
+            if (!user) return res.status(401).json({ error: "User / Password invalid." });
 
-        const user = await User.findOne({ email });
+            if (!checkPassword(user, password)) {
+            
+                return res
+                    .status(401)
+                    .json({ error: "User / Password invalid." });
+            }
+            
+            const { id } = user;
 
-        if (!user) return res.status(401).json({ error: "User / Password invalid." });
-
-        if (!checkPassword(user, password)) {
-            return res
-                .status(401)
-                .json({ error: "User / Password invalid." });
+            return res.json({
+                user: {
+                    id,
+                    email
+                },
+                token: jwt.sign({ id }, authConfig.secret, {
+                    expiresIn: authConfig.expiresIn,
+                })
+            });
+        } catch (error){
+            console.error(error);
+            console.log("Internal Server Error.");
         }
-        const { id } = user;
-
-        return res.json({
-            user: {
-                id,
-                email
-            },
-            token: jwt.sign({ id }, authConfig.secret, {
-                expiresIn: authConfig.expiresIn,
-            })
-        });
     }
 }
 
