@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import authConfig from "../config/auth";
-import promisify from "util";
+import {promisify} from "util";
 
 export default async (req, res, next) => {
 
